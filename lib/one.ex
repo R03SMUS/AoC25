@@ -2,25 +2,16 @@ defmodule One do
   def run() do
     Adventofcode.load_text(1)
     |> String.split("\n")
-    |> Enum.map_reduce(50, fn x, acc ->
+    |> Enum.scan(50, fn x, acc ->
       {dir, amount} = String.split_at(x, 1)
       amount = amount |> String.to_integer()
 
-      new_val =
-        case dir do
-          "R" -> acc + amount
-          "L" -> acc - amount
-        end
-
-      {new_val, new_val}
+      case dir do
+        "R" -> acc + amount
+        "L" -> acc - amount
+      end
     end)
-    |> then(fn x ->
-      {l, _} = x
-      l
-    end)
-    |> Enum.reject(fn x -> rem(x, 100) != 0 end)
-    |> Enum.count()
-    |> dbg()
+    |> Enum.count(fn x -> rem(x, 100) == 0 end)
   end
 
   def run2() do
