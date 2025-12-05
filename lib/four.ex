@@ -68,8 +68,6 @@ defmodule Four do
       end)
 
     changed = list |> List.flatten() |> Enum.count(fn x -> x == 0 end)
-    IO.inspect(list)
-    IO.inspect(changed)
 
     if changed == n do
       n

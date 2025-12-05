@@ -45,9 +45,28 @@ defmodule Five do
 
     range
     |> String.split("\n")
-    |> Enum.reduce(MapSet.new(), fn x, acc ->
-      [f, s] =
-        String.split(x, "-") |> Enum.map(fn x -> String.to_integer(x) end)
+    |> Enum.map(fn x ->
+      String.split(x, "-") |> Enum.map(fn x -> String.to_integer(x) end) |> List.to_tuple()
     end)
+    |> Enum.map(fn {min, max} ->
+      min..max
+    end)
+    |> Enum.sort()
+    |> Enum.reduce([..], fn x, acc ->
+      head = hd(acc)
+
+      if Range.disjoint?(x, head) do
+        [x | acc]
+      else
+        min..max//_ = head
+        min2..max2//_ = x
+
+        [min(min, min2)..max(max, max2)//1 | acc |> tl()]
+      end
+    end)
+    |> Enum.reverse()
+    |> tl()
+    |> Enum.map(fn ran -> Enum.count(ran) end)
+    |> Enum.sum()
   end
 end
