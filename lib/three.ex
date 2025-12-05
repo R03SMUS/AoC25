@@ -3,32 +3,10 @@ defmodule Three do
     Adventofcode.load_text(3)
     |> String.split("\n")
     |> Enum.map(fn list ->
-      list =
-        list
-        |> String.to_integer()
-        |> Integer.digits()
-
-      tl = list |> Enum.reverse() |> hd()
-
       list
-      |> Enum.slice(0, length(list) - 1)
-      |> Enum.reduce({0, 0}, fn x, acc ->
-        {first, second} = acc
-
-        cond do
-          x > first -> {x, 0}
-          x > second -> {first, x}
-          true -> {first, second}
-        end
-      end)
-      |> then(fn {first, second} ->
-        if tl > second do
-          {first, tl}
-        else
-          {first, second}
-        end
-      end)
-      |> Tuple.to_list()
+      |> String.to_integer()
+      |> Integer.digits()
+      |> find_max(2)
       |> Integer.undigits()
     end)
     |> Enum.sum()
