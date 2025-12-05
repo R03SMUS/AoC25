@@ -7,11 +7,11 @@ defmodule Five do
     range =
       range
       |> String.split("\n")
-      |> Enum.reduce([], fn x, acc ->
-        tup =
-          String.split(x, "-") |> Enum.map(fn x -> String.to_integer(x) end) |> List.to_tuple()
+      |> Enum.map(fn x ->
+        [min, max] =
+          String.split(x, "-") |> Enum.map(fn x -> String.to_integer(x) end)
 
-        [tup | acc]
+        min..max
       end)
 
     ids
@@ -19,22 +19,16 @@ defmodule Five do
     |> Enum.reduce(0, fn x, acc ->
       x = String.to_integer(x)
 
-      count =
-        Enum.reduce_while(range, false, fn range, acc ->
-          {min, max} = range
-
-          if min <= x and x <= max do
-            {:halt, true}
-          else
-            {:cont, acc}
-          end
-        end)
-
-      if count do
-        acc + 1
-      else
-        acc
+      case inrange?(range, x) do
+        true -> acc + 1
+        false -> acc
       end
+    end)
+  end
+
+  def inrange?(range, x) do
+    Enum.reduce(range, false, fn y, acc ->
+      x in y || acc
     end)
   end
 
@@ -46,9 +40,9 @@ defmodule Five do
     range
     |> String.split("\n")
     |> Enum.map(fn x ->
-      String.split(x, "-") |> Enum.map(fn x -> String.to_integer(x) end) |> List.to_tuple()
-    end)
-    |> Enum.map(fn {min, max} ->
+      [min, max] =
+        String.split(x, "-") |> Enum.map(fn x -> String.to_integer(x) end)
+
       min..max
     end)
     |> Enum.sort()
@@ -66,7 +60,7 @@ defmodule Five do
     end)
     |> Enum.reverse()
     |> tl()
-    |> Enum.map(fn ran -> Enum.count(ran) end)
+    |> Enum.map(fn ran -> Range.size(ran) end)
     |> Enum.sum()
   end
 end
