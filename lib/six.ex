@@ -11,13 +11,14 @@ defmodule Six do
       Map.put(map, index, [n | Map.get(map, index, [])])
     end)
     |> Enum.map(fn {_, [op | tl]} ->
+      numbers = Enum.map(tl, &String.to_integer(&1))
+
       case op do
         "+" ->
-          Enum.map(tl, fn x -> String.to_integer(x) end) |> Enum.sum()
+          numbers |> Enum.sum()
 
         "*" ->
-          Enum.map(tl, fn x -> String.to_integer(x) end)
-          |> Enum.product()
+          numbers |> Enum.product()
       end
     end)
     |> Enum.sum()
