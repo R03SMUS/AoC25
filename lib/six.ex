@@ -43,7 +43,7 @@ defmodule Six do
     end)
     |> Enum.to_list()
     |> Enum.sort()
-    |> Enum.map(fn {_index, n} -> Enum.reverse(n) |> Enum.reject(all, fn x -> x == 32 end) end)
+    |> Enum.map(fn {_index, n} -> Enum.reverse(n) |> Enum.reject(fn x -> x == 32 end) end)
     |> Enum.chunk_by(&(&1 == []))
     |> Enum.filter(fn x -> Enum.any?(x |> List.flatten()) end)
     |> Enum.zip(op)
