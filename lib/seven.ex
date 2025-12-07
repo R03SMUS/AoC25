@@ -29,7 +29,7 @@ defmodule Seven do
 
   def split(n), do: [n - 1, n + 1]
 
-  def run3() do
+  def run2() do
     [start | tail] =
       Adventofcode.load_text(7)
       |> String.split("\n")
@@ -47,21 +47,11 @@ defmodule Seven do
 
     Enum.reduce(tail, map, fn splitter, streger ->
       Enum.reduce(streger |> Map.keys(), streger, fn streg, map ->
-        # dbg("--------------")
-        # dbg(streg)
-        # dbg(map)
-        # dbg(splitter)
-
-        # dbg(map[streg])
-        # dbg(map[streg] >= 1)
-
         if map[streg] >= 1 do
           split(streg, streg in splitter, map)
         else
           map
         end
-
-        # |> dbg()
       end)
     end)
     |> Map.values()
@@ -76,39 +66,5 @@ defmodule Seven do
     |> Map.update(n + 1, 1, fn x -> x + amount end)
   end
 
-  def split(n, false, map), do: map
-
-  def run2() do
-    [start | tail] =
-      Adventofcode.test(7)
-      |> String.split("\n")
-      |> Enum.map(fn line ->
-        String.to_charlist(line)
-        |> Enum.with_index()
-        |> Enum.reject(fn {char, _index} -> char == ?. end)
-      end)
-      |> Enum.reject(&Enum.empty?/1)
-      |> Enum.map(fn line ->
-        Enum.map(line, fn {_char, index} -> index end)
-      end)
-
-    now = Time.utc_now()
-    result = rec(hd(start), tail)
-    Time.diff(Time.utc_now(), now) |> dbg()
-    result
-  end
-
-  def rec(_, []), do: 1
-
-  def rec(start_pos, splitters) do
-    dbg(start_pos)
-    head_splitters = hd(splitters)
-    tail_splitters = tl(splitters)
-
-    if Enum.member?(head_splitters, start_pos) do
-      rec(start_pos - 1, tail_splitters) + rec(start_pos + 1, tail_splitters)
-    else
-      rec(start_pos, tail_splitters)
-    end
-  end
+  def split(_, false, map), do: map
 end
