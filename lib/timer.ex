@@ -20,4 +20,16 @@ defmodule Timer do
 
     IO.puts("#{Time.diff(slut, start, :millisecond)} milliseconds")
   end
+
+  def time_all() do
+    start = Time.utc_now()
+
+    [One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Eleven, Tweleve]
+    |> Enum.map(fn module ->
+      IO.puts("Timing day #{module}:")
+      time(module)
+    end)
+
+    IO.puts("Total time: #{Time.diff(Time.utc_now(), start)}")
+  end
 end
