@@ -1,16 +1,12 @@
 defmodule Timer do
   def time(day) do
-    IO.puts("Part 1: ")
-
     start = Time.utc_now()
 
     day.run()
 
     slut = Time.utc_now()
 
-    IO.puts("#{Time.diff(slut, start, :millisecond)} milliseconds")
-
-    IO.puts("Part 2: ")
+    IO.puts("Part 1: #{Time.diff(slut, start, :millisecond)} milliseconds")
 
     start = Time.utc_now()
 
@@ -18,7 +14,7 @@ defmodule Timer do
 
     slut = Time.utc_now()
 
-    IO.puts("#{Time.diff(slut, start, :millisecond)} milliseconds")
+    IO.puts("Part 2: #{Time.diff(slut, start, :millisecond)} milliseconds")
   end
 
   def time_all() do
@@ -30,6 +26,6 @@ defmodule Timer do
       time(module)
     end)
 
-    IO.puts("Total time: #{Time.diff(Time.utc_now(), start)}")
+    IO.puts("Total time: #{Time.diff(Time.utc_now(), start)}\n")
   end
 end
