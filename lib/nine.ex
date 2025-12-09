@@ -59,7 +59,6 @@ defmodule Nine do
 
   # https://aoc.oppi.li/2.5-day-9.html#day-9
   # Has been a massive help.
-  # I kinda cheated here, so i wont submit my answer, so i dont know if it even is correct :3
   # I couldn't figure out how to make the check for if the box was inside, the polygon
   defp away?([x1, y1], [x2, y2], x, y, x_prime, y_prime) do
     max(x1, x2) <= min(x, x_prime) or
