@@ -1,4 +1,16 @@
 defmodule Timer do
+  def time(days) when is_list(days) do
+    start = Time.utc_now()
+
+    days
+    |> Enum.map(fn module ->
+      IO.puts("Timing day #{module}:")
+      time(module)
+    end)
+
+    IO.puts("Total time: #{Time.diff(Time.utc_now(), start)} seconds\n")
+  end
+
   def time(day) do
     start = Time.utc_now()
 
@@ -17,15 +29,21 @@ defmodule Timer do
     IO.puts("Part 2: #{Time.diff(slut, start, :millisecond)} milliseconds")
   end
 
-  def time_all() do
+  def time_all(skip \\ []) do
     start = Time.utc_now()
 
-    [One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Eleven, Tweleve]
+    skip = List.wrap(skip)
+
+    modules = [One, Two, Three, Four, Five, Six, Seven, Eight, Nine, Ten, Eleven, Tweleve]
+
+    Enum.reduce(skip, modules, fn skip, acc ->
+      List.delete(acc, skip)
+    end)
     |> Enum.map(fn module ->
       IO.puts("Timing day #{module}:")
       time(module)
     end)
 
-    IO.puts("Total time: #{Time.diff(Time.utc_now(), start)}\n")
+    IO.puts("Total time: #{Time.diff(Time.utc_now(), start)} seconds\n")
   end
 end
