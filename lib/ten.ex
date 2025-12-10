@@ -64,17 +64,28 @@ defmodule Ten do
   end
 
   def less(target, presses, state_presses, state, buttons) do
-    if state_presses > presses do
+    if state_presses > presses && presses < 10 do
       set(state, presses)
       do_all(target, state, buttons, presses)
     end
   end
 
   def do_all(target, state, buttons, presses) do
-    for(
-      button <- buttons,
-      do: find_min(target, MapSet.symmetric_difference(state, button), buttons, presses + 1)
-    )
+    case Enum.any?(
+           for(
+             button <- buttons,
+             do: MapSet.equal?(target, MapSet.symmetric_difference(state, button))
+           )
+         ) do
+      true ->
+        [presses + 1]
+
+      false ->
+        for(
+          button <- buttons,
+          do: find_min(target, MapSet.symmetric_difference(state, button), buttons, presses + 1)
+        )
+    end
   end
 
   use Agent
